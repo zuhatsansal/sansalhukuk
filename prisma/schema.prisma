@@ -1,0 +1,126 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+model User {
+  id        String   @id @default(cuid())
+  email     String   @unique
+  password  String
+  name      String
+  role      String   @default("admin")
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Article {
+  id          String    @id @default(cuid())
+  title       String
+  slug        String    @unique
+  content     String    @db.Text
+  excerpt     String?   @db.Text
+  coverImage  String?
+  categoryId  String?
+  category    Category? @relation(fields: [categoryId], references: [id])
+  published   Boolean   @default(false)
+  publishedAt DateTime?
+  metaTitle   String?
+  metaDesc    String?   @db.Text
+  viewCount   Int       @default(0)
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+
+  @@index([slug])
+  @@index([published, publishedAt])
+}
+
+model Category {
+  id        String    @id @default(cuid())
+  name      String
+  slug      String    @unique
+  articles  Article[]
+  createdAt DateTime  @default(now())
+}
+
+model PracticeArea {
+  id        String  @id @default(cuid())
+  title     String
+  slug      String  @unique
+  icon      String?
+  shortDesc String? @db.Text
+  content   String? @db.Text
+  sortOrder Int     @default(0)
+  published Boolean @default(true)
+  metaTitle String?
+  metaDesc  String? @db.Text
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([slug])
+}
+
+model TeamMember {
+  id        String  @id @default(cuid())
+  name      String
+  title     String
+  photo     String?
+  bio       String? @db.Text
+  email     String?
+  phone     String?
+  sortOrder Int     @default(0)
+  published Boolean @default(true)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Testimonial {
+  id        String   @id @default(cuid())
+  name      String
+  rating    Int      @default(5)
+  content   String   @db.Text
+  approved  Boolean  @default(false)
+  createdAt DateTime @default(now())
+}
+
+model ContactSubmission {
+  id        String   @id @default(cuid())
+  name      String
+  email     String
+  phone     String?
+  subject   String?
+  message   String   @db.Text
+  read      Boolean  @default(false)
+  createdAt DateTime @default(now())
+}
+
+model FAQ {
+  id        String  @id @default(cuid())
+  question  String
+  answer    String  @db.Text
+  sortOrder Int     @default(0)
+  published Boolean @default(true)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model SiteSetting {
+  id    String @id @default(cuid())
+  key   String @unique
+  value String @db.Text
+
+  @@index([key])
+}
+
+model Media {
+  id           String   @id @default(cuid())
+  filename     String
+  originalName String
+  url          String
+  mimeType     String?
+  size         Int?
+  alt          String?
+  createdAt    DateTime @default(now())
+}

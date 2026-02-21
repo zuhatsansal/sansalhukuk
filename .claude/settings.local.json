@@ -1,0 +1,16 @@
+{
+  "permissions": {
+    "allow": [
+      "WebFetch(domain:derinhukuk.av.tr)",
+      "Bash(npx:*)",
+      "Bash(docker:*)",
+      "Bash(docker-compose:*)",
+      "Bash(npm install:*)",
+      "Bash(where:*)",
+      "Bash(pg_isready:*)",
+      "Bash(npm run build:*)",
+      "Bash(node -e:*)",
+      "Bash(ls:*)"
+    ]
+  }
+}
